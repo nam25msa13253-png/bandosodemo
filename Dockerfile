@@ -15,4 +15,4 @@ ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
 COPY --from=build /app ./
 EXPOSE 3000
 # Tạo bảng + nạp dữ liệu (an toàn khi chạy lại) rồi khởi động web
-CMD ["sh", "-c", "npx drizzle-kit push --force && npx tsx scripts/seed.ts && npm start"]
+CMD ["sh", "-c", "npx tsx scripts/migrate.ts && npx tsx scripts/seed.ts && npm start"]

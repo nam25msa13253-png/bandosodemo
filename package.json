@@ -10,9 +10,11 @@
     "db:seed": "tsx scripts/seed.ts",
     "db:studio": "drizzle-kit studio",
     "images:download": "tsx scripts/download-images.ts",
-    "setup": "drizzle-kit push --force && tsx scripts/seed.ts",
+    "setup": "tsx scripts/migrate.ts && tsx scripts/seed.ts",
     "typecheck": "tsc --noEmit",
-    "start:render": "drizzle-kit push --force && tsx scripts/seed.ts && next start"
+    "start:render": "tsx scripts/migrate.ts && tsx scripts/seed.ts && next start",
+    "db:migrate": "tsx scripts/migrate.ts",
+    "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
     "bcryptjs": "3.0.3",
