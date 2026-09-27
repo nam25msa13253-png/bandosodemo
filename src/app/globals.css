@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy-50: #eef2f9;
+  --color-navy-100: #d6dff0;
+  --color-navy-600: #1a4a80;
+  --color-navy-700: #154072;
+  --color-navy-800: #0f3460;
+  --color-navy-900: #0a2544;
+  --color-accent: #fbbf24;
+  --color-emergency: #e11d48;
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  background: #f8fafc;
+  color: #334155;
+}
+
+/* Khoảng trống cho thanh tab dưới đáy trên điện thoại */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+}
+
+.card {
+  @apply rounded-2xl border border-slate-200 bg-white shadow-sm;
+}
+.btn {
+  @apply inline-flex items-center justify-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-semibold transition active:scale-[.98] disabled:opacity-50;
+}
+.btn-primary {
+  @apply bg-navy-800 text-white hover:bg-navy-700;
+}
+.btn-accent {
+  @apply bg-accent text-slate-900 hover:bg-amber-500;
+}
+.btn-outline {
+  @apply border border-slate-300 bg-white text-slate-700 hover:bg-slate-50;
+}
+.btn-danger {
+  @apply bg-rose-600 text-white hover:bg-rose-700;
+}
+.btn-green {
+  @apply bg-emerald-600 text-white hover:bg-emerald-700;
+}
+.input {
+  @apply w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-navy-600 focus:ring-2 focus:ring-navy-100;
+}
+.label {
+  @apply mb-1 block text-sm font-medium text-slate-700;
+}
+.chip {
+  @apply inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-medium transition;
+}
+
+/* Popup bản đồ */
+.maplibregl-popup-content {
+  border-radius: 14px !important;
+  padding: 12px 14px !important;
+  box-shadow: 0 10px 30px rgba(15, 52, 96, 0.18) !important;
+  font-family: var(--font-sans);
+}
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    padding: 0;
+  }
+}
+
+/* Tránh phần tử con của grid bị tràn ngang trên điện thoại */
+.grid > * {
+  min-width: 0;
+}

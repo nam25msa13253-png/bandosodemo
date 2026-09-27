@@ -1,0 +1,9 @@
+node_modules
+.next
+.env
+public/uploads/*
+!public/uploads/.gitkeep
+*.tsbuildinfo
+next-env.d.ts
+uploads/*
+day-len-github.bat

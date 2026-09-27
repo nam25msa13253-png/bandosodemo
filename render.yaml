@@ -1,0 +1,33 @@
+# Render Blueprint: tạo 1 web service + 1 CSDL PostgreSQL
+# Render Dashboard -> New -> Blueprint -> chọn repo này
+databases:
+  - name: bandoso-db
+    plan: free
+    databaseName: bandoso
+    user: bandoso
+
+services:
+  - type: web
+    name: bandosodemo
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm run start:render
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bandoso-db
+          property: connectionString
+      - key: AUTH_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: admin
+      # Mật khẩu admin do Render tự sinh – xem tại tab Environment của service
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: NEXT_PUBLIC_GOONG_MAPTILES_KEY
+        value: ""

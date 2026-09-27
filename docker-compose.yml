@@ -1,0 +1,40 @@
+# Cách 1 – chỉ chạy CSDL (khi phát triển trên máy):   docker compose up -d db
+# Cách 2 – chạy cả web + CSDL (khi đưa lên máy chủ):  docker compose up -d --build
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: bandoso-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bandoso
+      POSTGRES_PASSWORD: bandoso
+      POSTGRES_DB: bandoso
+    ports:
+      - "5432:5432"
+    volumes:
+      - bandoso-data:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_GOONG_MAPTILES_KEY: ${NEXT_PUBLIC_GOONG_MAPTILES_KEY:-}
+    container_name: bandoso-web
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://bandoso:bandoso@db:5432/bandoso
+      AUTH_SECRET: ${AUTH_SECRET:-hay-doi-chuoi-bi-mat-nay-truoc-khi-chay-that}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin@123456}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    ports:
+      - "3000:3000"
+    volumes:
+      - bandoso-uploads:/app/uploads
+
+volumes:
+  bandoso-data:
+  bandoso-uploads:
