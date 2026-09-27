@@ -3,6 +3,8 @@
 databases:
   - name: bandoso-db
     plan: free
+    # PHẢI cùng vùng với web service, nếu không web không thấy được CSDL (lỗi ENOTFOUND)
+    region: singapore
     databaseName: bandoso
     user: bandoso
 
