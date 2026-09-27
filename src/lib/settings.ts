@@ -52,9 +52,14 @@ const DEFAULTS: SiteSettings = {
 
 /** Đọc toàn bộ cấu hình (cache trong 1 request) */
 export const getSettings = cache(async (): Promise<SiteSettings> => {
-  const rows = await db.select().from(s.settings);
   const out = { ...DEFAULTS } as SiteSettings;
-  for (const r of rows) out[r.key] = r.value;
+  try {
+    const rows = await db.select().from(s.settings);
+    for (const r of rows) out[r.key] = r.value;
+  } catch (e) {
+    // Lúc build (VD trên Render) CSDL chưa có bảng -> dùng cấu hình mặc định, không làm hỏng build
+    if (process.env.NEXT_PHASE !== "phase-production-build") console.error("getSettings:", (e as Error).message);
+  }
   return out;
 });
 

@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { getSettings, siteUrl } from "@/lib/settings";
 
+// Mọi trang đọc cấu hình từ CSDL lúc chạy, không dựng sẵn lúc build
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const st = await getSettings();
   return {

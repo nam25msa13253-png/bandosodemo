@@ -134,10 +134,9 @@ export default function MapView({
           if (!f) return;
           const p = f.properties as Record<string, string>;
           const coords = (f.geometry as GeoJSON.Point).coordinates as [number, number];
-          new ml.Popup({ offset: 12, maxWidth: "280px" })
-            .setLngLat(coords)
-            .setHTML(
-              `<div style="min-width:200px">
+          // Dựng nội dung popup bằng DOM (dữ liệu đã được esc) thay vì setHTML của thư viện
+          const box = document.createElement("div");
+          box.innerHTML = `<div style="min-width:200px">
                 ${p.image ? `<img src="${esc(p.image)}" style="width:100%;height:110px;object-fit:cover;border-radius:10px;margin-bottom:8px" alt=""/>` : ""}
                 <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:${esc(p.color)}">${esc(p.sectorName)}</div>
                 <div style="font-weight:700;color:#1e293b;margin:2px 0 8px;line-height:1.3">${esc(p.name)}</div>
@@ -146,9 +145,8 @@ export default function MapView({
                   ${p.phone ? `<a href="tel:${esc(p.phone)}" style="flex:1;text-align:center;background:#059669;color:#fff;border-radius:8px;padding:6px 0;font-size:13px;font-weight:600">Gọi</a>` : ""}
                   <a href="https://www.google.com/maps/dir/?api=1&destination=${coords[1]},${coords[0]}" target="_blank" rel="noreferrer" style="flex:1;text-align:center;background:#fbbf24;color:#0f172a;border-radius:8px;padding:6px 0;font-size:13px;font-weight:600">Chỉ đường</a>
                 </div>
-              </div>`,
-            )
-            .addTo(map);
+              </div>`;
+          new ml.Popup({ offset: 12, maxWidth: "280px" }).setLngLat(coords).setDOMContent(box).addTo(map);
         });
         for (const layer of ["clusters", "points"]) {
           map.on("mouseenter", layer, () => (map.getCanvas().style.cursor = "pointer"));
